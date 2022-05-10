@@ -1,25 +1,21 @@
-package qa.guru.allure;
+package qa.guru.dz_allure_reports;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import io.qameta.allure.Allure;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
-import static com.codeborne.selenide.Selectors.withText;
+
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static io.qameta.allure.Allure.addAttachment;
 import static io.qameta.allure.Allure.step;
 
 
-public class StepsTest {
+public class DzStepsTest {
 
     private static final String REPOSITORY = "pankratovanl/qa_guru_11_7_AllureReports";
-    private static final int ISSUE_NUMBER = 1;
+
 
     @Test
     public void testLambdaSteps() {
@@ -35,12 +31,8 @@ public class StepsTest {
         step("Открыть репозиторий " + REPOSITORY, () -> {
             $(By.linkText(REPOSITORY)).click();
         });
-        step("Перейти в таб Issues", () -> {
-            $(By.partialLinkText("Issues")).click();
-            addAttachment("Page Source", "text/html", WebDriverRunner.source(), "html");
-        });
-        step("Проверить, что существует Issues с номером " + ISSUE_NUMBER, () -> {
-            $(withText("#1")).should(Condition.exist);
+        step("Проверить, что Issue существует в репозитории", () -> {
+            $(By.partialLinkText("Issues")).should(Condition.exist);
         });
     }
 
@@ -48,13 +40,12 @@ public class StepsTest {
     public void testAnnotatedSteps() {
         SelenideLogger.addListener("allure", new AllureSelenide());
 
-        WebSteps steps = new WebSteps();
+        DzWebSteps steps = new DzWebSteps();
         steps.openMainPage();
         steps.searchForRepository(REPOSITORY);
         steps.openRepository(REPOSITORY);
 
-        steps.openIssueTab();
-        steps.shouldSeeIssueWithNumber(ISSUE_NUMBER);
+        steps.shouldSeeIssue();
 
         steps.takeScreenshot();
 
