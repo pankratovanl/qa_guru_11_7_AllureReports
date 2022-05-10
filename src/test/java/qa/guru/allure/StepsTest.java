@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static io.qameta.allure.Allure.addAttachment;
 import static io.qameta.allure.Allure.step;
 
 
@@ -36,7 +37,7 @@ public class StepsTest {
         });
         step("Перейти в таб Issues", () -> {
             $(By.partialLinkText("Issues")).click();
-            Allure.addAttachment("Page Source", "text/html", WebDriverRunner.source(), "html");
+            addAttachment("Page Source", "text/html", WebDriverRunner.source(), "html");
         });
         step("Проверить, что существует Issues с номером " + ISSUE_NUMBER, () -> {
             $(withText("#1")).should(Condition.exist);
